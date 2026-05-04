@@ -37,23 +37,46 @@
     </ul>
 
     <script>
-        // Now the script is outside the style tags, so it will work!
-        async function startSearch() {
-            const artist = document.getElementById('artistInput').value;
-            const list = document.getElementById('artistList');
-            const status = document.getElementById('statusText');
+async function startSearch() {
+    const artistInput = document.getElementById('artistInput').value;
+    const list = document.getElementById('artistList');
+    const status = document.getElementById('statusText');
+    const apiKey = 'YOUR_KEY_HERE'; // <--- Paste your Last.fm API Key here!
 
-            if (!artist) {
-                alert("Please type a name first!");
-                return;
-            }
+    if (!artistInput) return;
 
-            status.innerText = `Since you like ${artist}, you might like:`;
+    status.innerText = `Searching for artists similar to ${artistInput}...`;
+    list.innerHTML = ""; // Clear the list for new results
+
+    // 1. The "Order": Tell the API what we want
+    const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${encodeURIComponent(artistInput)}&api_key=${apiKey}&format=json`;
+
+    try {
+        // 2. The "Fetch": Go get the data
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // 3. The "Check": Did Last.fm find the artist?
+        if (data.similarartists && data.similarartists.artist) {
+            const results = data.similarartists.artist;
             
-            // For now, this just clears the list and adds the name you typed.
-            // We will add the "Loop" for the API data here next.
-            list.innerHTML = `<li>Searching for similar artists to ${artist}...</li>`; 
+            status.innerText = `Since you like ${artistInput}, you might like:`;
+
+            // 4. The "Loop": For every artist found, create a list item
+            results.slice(0, 10).forEach(artist => { // We'll just take the top 10 for now
+                const li = document.createElement('li');
+                li.innerText = artist.name;
+                list.appendChild(li);
+            });
+        } else {
+            status.innerText = "Sorry, couldn't find that artist.";
         }
+
+    } catch (error) {
+        console.error("API Error:", error);
+        status.innerText = "Oops! Something went wrong with the search.";
+    }
+}
     </script>
 
 </body>
