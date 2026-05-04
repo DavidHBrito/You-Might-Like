@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html> 
 <head>
-    <style>
-        :root {
-    --bg-color: #1e1e2e;
-    --txt-color: #cdd6f4;
-    --accent: #b4befe;
-    --crust: #11111b;
-    }
-    
-    body {
-    background-color: var(--bg-color);
-    color: var(--txt-color);
-    }
-        </style>
     <title>What do you like?</title>
     <style>
+        /* This is your CSS area */
+        :root {
+            --bg-color: #1e1e2e;
+            --txt-color: #cdd6f4;
+            --accent: #b4befe;
+            --crust: #11111b;
+        }
         
-<h1>Artist Explorer</h1>
+        body {
+            background-color: var(--bg-color);
+            color: var(--txt-color);
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        #artistList {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is the visible area of your site -->
+    <h1>Artist Explorer</h1>
+    <p id="statusText">Type an artist to see recommendations.</p>
+    
     <input type="text" id="artistInput" placeholder="Type an artist...">
     <button onclick="startSearch()">Search</button>
 
@@ -26,15 +37,24 @@
     </ul>
 
     <script>
-        // All your JavaScript logic goes here!
+        // Now the script is outside the style tags, so it will work!
         async function startSearch() {
             const artist = document.getElementById('artistInput').value;
-            // ... your API code ...
-            
-            // To show it on the page, do this:
             const list = document.getElementById('artistList');
-            list.innerHTML = `<li>Found: ${artist}</li>`; 
+            const status = document.getElementById('statusText');
+
+            if (!artist) {
+                alert("Please type a name first!");
+                return;
+            }
+
+            status.innerText = `Since you like ${artist}, you might like:`;
+            
+            // For now, this just clears the list and adds the name you typed.
+            // We will add the "Loop" for the API data here next.
+            list.innerHTML = `<li>Searching for similar artists to ${artist}...</li>`; 
         }
     </script>
-     </html>
-}
+
+</body>
+</html>
