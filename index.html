@@ -16,25 +16,25 @@
         </style>
     <title>What do you like?</title>
     <style>
-    </html>
         
-<script>        
-async function getBigArtistPool(userInput) {
-    // 1. Fetch from Last.fm
-    const lastFmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${userInput}&api_key=YOUR_KEY&format=json`;
-    const lastFmResponse = await fetch(lastFmUrl);
-    const lastFmData = await lastFmResponse.json();
-    const lastFmList = lastFmData.similarartists.artist.map(a => a.name);
+<h1>Artist Explorer</h1>
+    <input type="text" id="artistInput" placeholder="Type an artist...">
+    <button onclick="startSearch()">Search</button>
 
-    // 2. Fetch from ListenBrainz (Simplified example)
-    // Note: ListenBrainz works best if you have the MBID first, 
-    // but you can also search by name.
-    const lbUrl = `https://api.listenbrainz.org/1/stats/user/demo/similar-artists`; 
-    // (For your IT project, using the 'demo' user or a specific artist lookup works well)
+    <ul id="artistList">
+        <!-- This is where the names will appear -->
+    </ul>
 
-    // 3. The "Deduper" (The trick I showed you earlier)
-    const combinedPool = [...new Set([...lastFmList])]; 
-    
-    console.log("Your master list of unique artists:", combinedPool);
+    <script>
+        // All your JavaScript logic goes here!
+        async function startSearch() {
+            const artist = document.getElementById('artistInput').value;
+            // ... your API code ...
+            
+            // To show it on the page, do this:
+            const list = document.getElementById('artistList');
+            list.innerHTML = `<li>Found: ${artist}</li>`; 
+        }
     </script>
+     </html>
 }
