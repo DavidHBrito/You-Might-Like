@@ -17,7 +17,7 @@
     <title>What do you like?</title>
     <style>
     </html>
-        
+        <script>        
 async function getBigArtistPool(userInput) {
     // 1. Fetch from Last.fm
     const lastFmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=${userInput}&api_key=YOUR_KEY&format=json`;
@@ -35,4 +35,5 @@ async function getBigArtistPool(userInput) {
     const combinedPool = [...new Set([...lastFmList])]; 
     
     console.log("Your master list of unique artists:", combinedPool);
+    </script>
 }
